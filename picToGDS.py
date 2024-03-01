@@ -17,7 +17,7 @@ def minmax(v):
     return v
 
 
-def main(fileName, sizeOfTheCell, layerNum, dataTypeNumber, isDither, scale):
+def main(fileName, sizeOfTheCell, layerNum, dataTypeNum, isDither, scale):
     """Convert an image file (fileName) to a GDS file
     """
     print("Converting an image file to a GDS file..")
@@ -100,4 +100,4 @@ if __name__ == "__main__":
     parser.add_argument('-d', action='store_true', help='Floyd–Steinberg dithering')
     args = parser.parse_args()
     
-    main(args.fileName, args.sizeOfTheCell, args.layerNum, args.dataTypeNumber, args.d, args.scale)
+    main(args.fileName, args.sizeOfTheCell, args.layerNum, args.dataTypeNum, args.d, args.scale)
