@@ -17,7 +17,7 @@ def minmax(v):
     return v
 
 
-def main(fileName, sizeOfTheCell, layerNum, isDither, scale):
+def main(fileName, sizeOfTheCell, layerNum, dataTypeNumber, isDither, scale):
     """Convert an image file (fileName) to a GDS file
     """
     print("Converting an image file to a GDS file..")
@@ -69,7 +69,7 @@ def main(fileName, sizeOfTheCell, layerNum, isDither, scale):
 
     # Geometry must be placed in cells.
     unitCell = lib.new_cell('CELL')
-    square = gdspy.Rectangle((0.0, 0.0), (1.0, 1.0), layer=(int)(layerNum))
+    square = gdspy.Rectangle((0.0, 0.0), (1.0, 1.0), layer=(int)(layerNum), datatype=(int)(dataTypeNum))
     unitCell.add(square)
 
     grid =  lib.new_cell("GRID")
@@ -95,8 +95,9 @@ if __name__ == "__main__":
     parser.add_argument('fileName', type=str, help='name of the input image file')
     parser.add_argument('sizeOfTheCell', type=float, help='size of the unit-cells (minimum width and space) [um]')
     parser.add_argument('layerNum', type=int, help='layer number of the output GDSII file')
+    parser.add_argument('dataTypeNum', type=int, help='data type number of the output GDSII file')
     parser.add_argument('--scale', default=1.0, type=float, help='scale')
     parser.add_argument('-d', action='store_true', help='Floyd–Steinberg dithering')
     args = parser.parse_args()
     
-    main(args.fileName, args.sizeOfTheCell, args.layerNum, args.d, args.scale)
+    main(args.fileName, args.sizeOfTheCell, args.layerNum, args.dataTypeNumber, args.d, args.scale)
