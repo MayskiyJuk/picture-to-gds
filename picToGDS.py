@@ -20,6 +20,12 @@ def minmax(v):
 def main(fileName, sizeOfTheCell, layerNum, dataTypeNum, isDither, scale):
     """Convert an image file (fileName) to a GDS file
     """
+    
+    print("Version of cv2:")
+    print(cv2.__version__)
+    print("Version of gdspy:")
+    print(gdspy.__version__)
+    
     print("Converting an image file to a GDS file..")
     # Read an image file
     img = cv2.resize(cv2.imread(fileName), dsize=None, fx=scale, fy=scale)
@@ -55,24 +61,23 @@ def main(fileName, sizeOfTheCell, layerNum, dataTypeNum, isDither, scale):
         for y in range(height - 1):
             if binaryImage.item(y, x) == 0 and binaryImage.item(y + 1, x) == 255 \
                     and binaryImage.item(y, x + 1) == 255 and binaryImage.item(y + 1, x + 1) == 0:
-                binaryImage.itemset((y + 1, x), 0)
+                binaryImage[y + 1, x] = 0
             elif binaryImage.item(y, x) == 255 and binaryImage.item(y + 1, x) == 0 \
                     and binaryImage.item(y, x + 1) == 0 and binaryImage.item(y + 1, x + 1) == 255:
-                binaryImage.itemset((y + 1, x + 1), 0)
+                binaryImage[y + 1, x + 1] = 0
 
     # Output image.bmp
     cv2.imwrite("image.bmp", binaryImage)
     
     # The GDSII file is called a library, which contains multiple cells.
-    lib = gdspy.GdsLibrary()
     gdspy.current_library=gdspy.GdsLibrary()
 
     # Geometry must be placed in cells.
-    unitCell = lib.new_cell('CELL')
+    unitCell = gdspy.Cell('CELL')
     square = gdspy.Rectangle((0.0, 0.0), (1.0, 1.0), layer=(int)(layerNum), datatype=(int)(dataTypeNum))
     unitCell.add(square)
 
-    grid =  lib.new_cell("GRID")
+    grid =  gdspy.Cell("GRID")
 
     for x in range(width):
         for y in range(height):
@@ -85,9 +90,9 @@ def main(fileName, sizeOfTheCell, layerNum, dataTypeNum, isDither, scale):
         grid, origin=(0, 0), magnification=(float)(sizeOfTheCell))
 
     # Add the top-cell to a layout and save
-    top = lib.new_cell("TOP")
+    top = gdspy.Cell("TOP")
     top.add(scaledGrid)
-    lib.write_gds("image.gds")
+    gdspy.write_gds("image.gds")
 
 
 if __name__ == "__main__":
