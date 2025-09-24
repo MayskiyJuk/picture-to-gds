@@ -20,6 +20,12 @@ def minmax(v):
 def main(fileName, sizeOfTheCell, layerNum, dataTypeNum, isDither, scale):
     """Convert an image file (fileName) to a GDS file
     """
+    
+    print("Version of cv2:")
+    print(cv2.__version__)
+    print("Version of gdspy:")
+    print(gdspy.__version__)
+    
     print("Converting an image file to a GDS file..")
     # Read an image file
     img = cv2.resize(cv2.imread(fileName), dsize=None, fx=scale, fy=scale)
